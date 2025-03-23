@@ -12,7 +12,7 @@ std::function<std::time_t()> Message::timeProvider = []() {
 
 std::time_t Message::lastTime = 0;
 
-Message::Message(const std::string& text, User& sender, User& addressee) : text(text), sender(sender), addressee(addressee){
+Message::Message(const std::string& text, User& sender, User& addressee) : text(text), sender(sender), addressee(addressee), isRead(false){
 
     static std::mt19937 rng(std::random_device{}());
     static std::uniform_int_distribution<int> dist(1, 14400);
@@ -25,10 +25,9 @@ Message::Message(const std::string& text, User& sender, User& addressee) : text(
     timestamp = generateTimestamp(lastTime);
 }
 
-// Implementazione metodi statici per i test
 void Message::setTimeProvider(std::function<std::time_t()> provider) {
     timeProvider = provider;
-    lastTime = 0; // Resetta per nuovi test
+    lastTime = 0;
 }
 
 void Message::resetTimeProvider() {
@@ -56,7 +55,7 @@ std::string Message::generateTimestamp(std::time_t baseTime) {
 
 Message::Message(const Message& other)
         : text(other.text), sender(other.sender),
-          addressee(other.addressee), timestamp(other.timestamp) {}
+          addressee(other.addressee), timestamp(other.timestamp), isRead(other.isRead) {}
 
 Message& Message::operator=(const Message& other) {
     if(this != &other) {
@@ -64,6 +63,7 @@ Message& Message::operator=(const Message& other) {
         sender = other.sender;
         addressee = other.addressee;
         timestamp = other.timestamp;
+        isRead = other.isRead;
     }
     return *this;
 }
@@ -73,8 +73,16 @@ const User& Message::getSender() const { return sender; }
 const User& Message::getAddressee() const { return addressee; }
 const std::string& Message::getTimestamp() const { return timestamp; }
 
+void Message::markAsRead() {
+    isRead = true;
+}
+
+bool Message::getReadStatus() const{
+    return isRead;
+}
+
 void Message::printMessage() const {
     std::cout << "[" << timestamp << "] "
               << sender.getName() << " to "
-              << addressee.getName() << " : "<<text<< (isRead ? " (Read)" : "") << std::endl;
+              << addressee.getName() << " : "<<text<< (getReadStatus() ? " (Read)" : " (Not Read)") << std::endl;
 }

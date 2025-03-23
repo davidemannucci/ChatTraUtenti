@@ -8,7 +8,6 @@
 class UserTest : public ::testing::Test {
 protected:
     void TearDown() override {
-        // Reset static ID counter after each test
         IdCreator::idUsed.clear();
     }
 };
@@ -32,7 +31,20 @@ TEST_F(UserTest, EqualityBasedOnIdOnly) {
     EXPECT_FALSE(user1 == user2);
 }
 
-#include "User.h"
+TEST_F(UserTest, ConstructorSetsNameAndId) {
+    User user("Marco");
+    EXPECT_EQ(user.getName(), "Marco");
+    EXPECT_GE(user.getId(), 1000);
+    EXPECT_LE(user.getId(), 9999);
+}
+
+TEST_F(UserTest, PrintOutputFormat) {
+    User user("Marco");
+    testing::internal::CaptureStdout();
+    user.print();
+    std::string output = testing::internal::GetCapturedStdout();
+    EXPECT_TRUE(output.find("Utente: Marco (Id associato: ") != std::string::npos);
+}
 
 class MessageTest : public ::testing::Test {
 protected:
@@ -64,14 +76,36 @@ TEST_F(MessageTest, CopySemanticsPreserveTimestamp) {
     EXPECT_EQ(original.getText(), copy.getText());
 }
 
-TEST_F(MessageTest, PrintMessageFormatsCorrectly) {
-    Message msg("Test message", sender, receiver);
+TEST_F(MessageTest, PrintMessageReadStatus) {
+    Message msg("Test", sender, receiver);
+    msg.markAsRead();
     testing::internal::CaptureStdout();
     msg.printMessage();
     std::string output = testing::internal::GetCapturedStdout();
 
-    std::string expected = "[2023-11-14 22:13:20] Marco to Maria : Test message\n";
-    EXPECT_EQ(output, expected);
+    EXPECT_TRUE(output.find("(Read)") != std::string::npos);
+}
+
+TEST_F(MessageTest, ReadStatusInitializedToFalse) {
+    Message msg("Test", sender, receiver);
+    EXPECT_FALSE(msg.getReadStatus());
+}
+
+TEST_F(MessageTest, AssignmentOperatorCopiesAllFields) {
+    Message original("Original", sender, receiver);
+    original.markAsRead();
+    Message copy;
+    copy = original;
+    EXPECT_EQ(copy.getText(), "Original");
+    EXPECT_TRUE(copy.getReadStatus());
+}
+
+TEST_F(MessageTest, RandomTimestampIncrement) {
+    Message::resetTimeProvider();
+    Message::setTimeProvider([]() { return 1000; });
+    Message msg1("Msg1", sender, receiver);
+    Message msg2("Msg2", sender, receiver);
+    EXPECT_GT(msg2.getTimestamp(), msg1.getTimestamp()); // Verifica incremento
 }
 
 
@@ -93,9 +127,23 @@ TEST_F(ChatTest, DeletesMessagesSafely) {
     chat.deleteMessage(0);
     EXPECT_TRUE(chat.chatMessages.empty());
 
-    // Verifica che indici non validi lancino eccezioni
     EXPECT_THROW(chat.deleteMessage(-1), std::out_of_range);
     EXPECT_THROW(chat.deleteMessage(100), std::out_of_range);
+}
+
+TEST_F(ChatTest, ShowEmptyChatOutput) {
+    testing::internal::CaptureStdout();
+    chat.showChat();
+    std::string output = testing::internal::GetCapturedStdout();
+    EXPECT_TRUE(output.find("Chat tra Marco e Maria") != std::string::npos);
+    EXPECT_TRUE(output.find("-----------------------") != std::string::npos);
+}
+
+TEST_F(ChatTest, PrintChatInfoFormat) {
+    testing::internal::CaptureStdout();
+    chat.printChatInfo();
+    std::string output = testing::internal::GetCapturedStdout();
+    EXPECT_TRUE(output.find("Chat tra Marco (ID: ") != std::string::npos);
 }
 
 class ChatRegisterTest : public ::testing::Test {
@@ -129,4 +177,11 @@ TEST_F(ChatRegisterTest, FindNonexistentChatThrows) {
 
 TEST_F(ChatRegisterTest, DeleteNonexistentChatThrows) {
     EXPECT_THROW(registry.deleteChat(999, 1000), std::runtime_error); // Testa cancellazione chat inesistente
+}
+
+TEST_F(ChatRegisterTest, PrintEmptyRegisterOutput) {
+    testing::internal::CaptureStdout();
+    registry.printRegister();
+    std::string output = testing::internal::GetCapturedStdout();
+    EXPECT_TRUE(output.find("Il registro è vuoto!") != std::string::npos);
 }

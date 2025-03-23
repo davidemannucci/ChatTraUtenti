@@ -22,7 +22,7 @@ void Chat::deleteMessage(int index) {
     if (index < 0 || index >= chatMessages.size()) {
         throw std::out_of_range("Errore: indice messaggio non valido!");
     }
-    std::cout << "Eliminando messaggio: ";
+    std::cout << "\nEliminando messaggio: ";
     chatMessages[index].printMessage();
     chatMessages.erase(chatMessages.begin() + index);
 

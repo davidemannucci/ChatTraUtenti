@@ -24,17 +24,15 @@ public:
     Message() = default;
     Message(const Message& other);
 
-    // Interface per i test
     static void setTimeProvider(std::function<std::time_t()> provider);
     static void resetTimeProvider();
 
-    // Getters
     const std::string& getText() const;
     const User& getSender() const;
     const User& getAddressee() const;
     const std::string& getTimestamp() const;
-    void markAsRead();
     bool getReadStatus() const;
+    void markAsRead();
     void printMessage() const;
 
     Message& operator=(const Message& other);
