@@ -77,12 +77,12 @@ void Message::markAsRead() {
     isRead = true;
 }
 
-bool Message::getReadStatus() const{
+bool Message::getIsRead() const{
     return isRead;
 }
 
 void Message::printMessage() const {
     std::cout << "[" << timestamp << "] "
               << sender.getName() << " to "
-              << addressee.getName() << " : "<<text<< (getReadStatus() ? " (Read)" : " (Not Read)") << std::endl;
+              << addressee.getName() << " : "<<text<< (getIsRead() ? " (Read)" : " (Not Read)") << std::endl;
 }

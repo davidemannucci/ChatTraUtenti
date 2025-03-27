@@ -21,7 +21,6 @@ private:
 
 public:
     Message(const std::string& text, User& sender, User& addressee);
-    Message() = default;
     Message(const Message& other);
 
     static void setTimeProvider(std::function<std::time_t()> provider);
@@ -31,7 +30,7 @@ public:
     const User& getSender() const;
     const User& getAddressee() const;
     const std::string& getTimestamp() const;
-    bool getReadStatus() const;
+    bool getIsRead() const;
     void markAsRead();
     void printMessage() const;
 

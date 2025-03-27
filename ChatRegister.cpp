@@ -3,14 +3,14 @@
 #include <map>
 #include <vector>
 
-void ChatRegister::addChat(const Chat &chat) {
-    std::vector <std::pair<time_t, Chat>> sortedChats;
-    int id1 = std::min(chat.user1.id, chat.user2.id);
-    int id2 = std::max(chat.user1.id, chat.user2.id);
-    if (chats.find({id1, id2}) != chats.end()){
-        throw std::runtime_error("Errore: chat gia' esistente!");
+void ChatRegister::addChat(const Chat& chat) {
+    int id1 = std::min(chat.getUser1Id(), chat.getUser2Id());
+    int id2 = std::max(chat.getUser1Id(), chat.getUser2Id());
+    std::pair<int, int> key(id1, id2);
+    auto result = chats.emplace(key, chat);
+    if (!result.second) {
+        throw std::runtime_error("Chat gia' presente nel registro!");
     }
-    chats[{id1, id2}] = chat;
 }
 
 Chat& ChatRegister::findChat(int id1, int id2) {

@@ -28,3 +28,11 @@ void Chat::deleteMessage(int index) {
 
     std::cout << "Messaggio eliminato con successo!\n";
 }
+
+int Chat::getUser1Id() const {
+    return user1.getId();
+}
+
+int Chat::getUser2Id() const {
+    return user2.getId();
+}

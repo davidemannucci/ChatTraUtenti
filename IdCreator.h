@@ -5,6 +5,8 @@
 
 class IdCreator{
     public:
-        static std::unordered_set<int> idUsed;
         static int createId();
+
+    private:
+        static std::unordered_set<int> idUsed;
 };
