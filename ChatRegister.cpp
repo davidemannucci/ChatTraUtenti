@@ -39,7 +39,7 @@ void ChatRegister:: printRegister() const {
         std::cout << "\nChat nel registro:\n";
         for (const auto& chatPair : chats) {
             const auto& chat = chatPair.second;
-            chat.printChatInfo();
+            std::cout<<chat.getChatName()<<std::endl;
         }
     }
 }

@@ -14,8 +14,8 @@ int main() {
     int idMaria = Maria.getId();
     User Marco("Marco");
     int idMarco = Marco.getId();
-    Chat chat1(Francesco, Marco);
-    Chat chat2(Marco, Maria);
+    Chat chat1("Chat tra Francesco e Marco",Francesco, Marco);
+    Chat chat2("Chat tra Marco e Maria",Marco, Maria);
     Message message1("Ciao", Francesco, Marco);
     Message message2("Ciao Francesco", Marco, Francesco);
     Message message3("Come va?", Francesco, Marco);
@@ -25,18 +25,23 @@ int main() {
     std::cout << "Marco ID: " << idMarco << std::endl;
     std::cout<<"Maria ID: "<< idMaria<< std::endl;
 
-    message1.markAsRead();
+
     chat1.sendMessage(message1);
 
-    message2.markAsRead();
+    chat1.markMessageAsRead(0);
+
     chat1.sendMessage(message2);
 
-    message3.markAsRead();
     chat1.sendMessage(message3);
 
     chat1.sendMessage(message4);
 
     chat1.showChat();
+    int unreadMessages= chat1.getUnreadMessageCount();
+    int totalMessages = chat1.getTotalMessages();
+
+    std::cout<< "Messaggi totali della "<<chat1.getChatName()<<": "<<totalMessages<<std::endl;
+    std::cout<< "Messaggi non letti della "<<chat1.getChatName()<<": "<<unreadMessages<<"\n"<<std::endl;
 
     chat2.sendMessage(message5);
     chat2.showChat();

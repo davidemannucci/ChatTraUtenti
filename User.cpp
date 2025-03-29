@@ -13,10 +13,6 @@ int User::getId() const{
     return id;
 }
 
-void User::print() const {
-    std::cout<<"Utente: "<<name<<" (Id associato: "<<id<<")"<<std::endl;
-}
-
 bool User::operator==(const User& other) const {
     return id == other.id;
 }

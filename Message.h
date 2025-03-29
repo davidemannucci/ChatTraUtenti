@@ -15,7 +15,7 @@ private:
     User sender;
     User addressee;
     std::string timestamp;
-    bool isRead;
+    bool read;
 
     std::string generateTimestamp(std::time_t baseTime);
 
@@ -30,7 +30,7 @@ public:
     const User& getSender() const;
     const User& getAddressee() const;
     const std::string& getTimestamp() const;
-    bool getIsRead() const;
+    bool IsRead() const;
     void markAsRead();
     void printMessage() const;
 

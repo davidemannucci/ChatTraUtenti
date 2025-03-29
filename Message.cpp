@@ -12,7 +12,7 @@ std::function<std::time_t()> Message::timeProvider = []() {
 
 std::time_t Message::lastTime = 0;
 
-Message::Message(const std::string& text, User& sender, User& addressee) : text(text), sender(sender), addressee(addressee), isRead(false){
+Message::Message(const std::string& text, User& sender, User& addressee) : text(text), sender(sender), addressee(addressee), read(false){
 
     static std::mt19937 rng(std::random_device{}());
     static std::uniform_int_distribution<int> dist(1, 14400);
@@ -55,7 +55,7 @@ std::string Message::generateTimestamp(std::time_t baseTime) {
 
 Message::Message(const Message& other)
         : text(other.text), sender(other.sender),
-          addressee(other.addressee), timestamp(other.timestamp), isRead(other.isRead) {}
+          addressee(other.addressee), timestamp(other.timestamp), read(other.read) {}
 
 Message& Message::operator=(const Message& other) {
     if(this != &other) {
@@ -63,7 +63,7 @@ Message& Message::operator=(const Message& other) {
         sender = other.sender;
         addressee = other.addressee;
         timestamp = other.timestamp;
-        isRead = other.isRead;
+        read = other.read;
     }
     return *this;
 }
@@ -74,15 +74,15 @@ const User& Message::getAddressee() const { return addressee; }
 const std::string& Message::getTimestamp() const { return timestamp; }
 
 void Message::markAsRead() {
-    isRead = true;
+    read = true;
 }
 
-bool Message::getIsRead() const{
-    return isRead;
+bool Message::IsRead() const{
+    return read;
 }
 
 void Message::printMessage() const {
     std::cout << "[" << timestamp << "] "
               << sender.getName() << " to "
-              << addressee.getName() << " : "<<text<< (getIsRead() ? " (Read)" : " (Not Read)") << std::endl;
+              << addressee.getName() << " : "<<text<< (IsRead() ? " (Read)" : " (Not Read)") << std::endl;
 }
