@@ -30,9 +30,9 @@ public:
     const User& getSender() const;
     const User& getAddressee() const;
     const std::string& getTimestamp() const;
-    bool IsRead() const;
+    bool isRead() const;
     void markAsRead();
-    void printMessage() const;
+    std::string toStringMessage() const;
 
     Message& operator=(const Message& other);
 };

@@ -21,9 +21,9 @@ int main() {
     Message message3("Come va?", Francesco, Marco);
     Message message4("Tutto bene", Marco, Francesco);
     Message message5("Buongiorno Marco!", Maria, Marco);
-    std::cout << "Francesco ID: " << idFrancesco << std::endl;
-    std::cout << "Marco ID: " << idMarco << std::endl;
-    std::cout<<"Maria ID: "<< idMaria<< std::endl;
+    std::cout << Francesco.toStringUser() << std::endl;
+    std::cout << Marco.toStringUser() << std::endl;
+    std::cout << Maria.toStringUser() << "\n" << std::endl;
 
 
     chat1.sendMessage(message1);
@@ -36,7 +36,9 @@ int main() {
 
     chat1.sendMessage(message4);
 
-    chat1.showChat();
+    std::string Chat1= chat1.toStringChat();
+    std::cout<<Chat1<<std::endl;
+
     int unreadMessages= chat1.getUnreadMessageCount();
     int totalMessages = chat1.getTotalMessages();
 
@@ -44,7 +46,8 @@ int main() {
     std::cout<< "Messaggi non letti della "<<chat1.getChatName()<<": "<<unreadMessages<<"\n"<<std::endl;
 
     chat2.sendMessage(message5);
-    chat2.showChat();
+    std::string Chat2= chat2.toStringChat();
+    std::cout<<Chat2<<std::endl;
 
     try {
         std::cout << "\nAggiungendo al registro la chat tra Francesco e Marco...\n";
@@ -88,7 +91,7 @@ int main() {
     try {
         std::cout << "\nCercando nel registro la chat tra Maria e Francesco...\n";
         Chat& foundChat = registerChat.findChat(idMaria, idMarco);
-        foundChat.showChat();
+        foundChat.toStringChat();
     } catch (const std::runtime_error& e) {
         std::cout << "Errore: "<< e.what()<<std::endl;
     }
@@ -96,14 +99,14 @@ int main() {
     try {
         std::cout << "\nCercando nel registro la chat tra Marco e Francesco...\n";
         Chat& foundChat = registerChat.findChat(idMarco, idFrancesco);
-        foundChat.showChat();
+        std::cout<< foundChat.toStringChat();
     } catch (const std::runtime_error& e) {
         std::cout << "Errore: "<< e.what()<<std::endl;
     }
 
     try {
         chat1.deleteMessage(1);  // Elimina il secondo messaggio
-        chat1.showChat();
+        std::cout<< chat1.toStringChat();
     } catch (const std::out_of_range& e) {
         std::cerr << "Errore: " << e.what() << std::endl;
     }

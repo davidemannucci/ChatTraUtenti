@@ -11,6 +11,7 @@ class User{
 
         const std::string& getName() const;
         int getId() const;
+        std::string toStringUser() const;
 
     private:
         std::string name;

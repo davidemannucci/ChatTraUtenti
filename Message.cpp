@@ -3,6 +3,7 @@
 #include <random>
 #include <iomanip>
 #include <sstream>
+#include <string>
 
 std::function<std::time_t()> Message::timeProvider = []() {
     return std::chrono::system_clock::to_time_t(
@@ -77,12 +78,14 @@ void Message::markAsRead() {
     read = true;
 }
 
-bool Message::IsRead() const{
+bool Message::isRead() const{
     return read;
 }
 
-void Message::printMessage() const {
-    std::cout << "[" << timestamp << "] "
+std::string Message::toStringMessage() const {
+    std::stringstream ss;
+    ss << "[" << timestamp << "] "
               << sender.getName() << " to "
-              << addressee.getName() << " : "<<text<< (IsRead() ? " (Read)" : " (Not Read)") << std::endl;
+              << addressee.getName() << " : "<<text<< (isRead() ? " (Read)" : " (Not Read)") << std::endl;
+    return ss.str();
 }

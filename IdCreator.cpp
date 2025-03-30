@@ -12,3 +12,7 @@ int IdCreator::createId() {
     idUsed.insert(newId);
     return newId;
 }
+
+void IdCreator::reset() {
+    idUsed.clear();
+}

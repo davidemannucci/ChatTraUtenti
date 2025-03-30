@@ -1,6 +1,7 @@
 #include "Chat.h"
 #include "User.h"
 #include "Message.h"
+#include <sstream>
 
 void Chat::sendMessage(const Message& message) {
     const User& messageSender = message.getSender();
@@ -14,20 +15,21 @@ void Chat::sendMessage(const Message& message) {
     chatMessages.push_back(message);
 }
 
-void Chat::showChat(){
-    std::cout << "Chat tra " << user1.getName() << " e " << user2.getName() << ":\n";
+std::string Chat::toStringChat() const {
+    std::stringstream ss;
+    ss << "Nome chat: " << name << "\n";
     for (const auto& message : chatMessages) {
-        message.printMessage();
+        ss << message.toStringMessage();
     }
-    std::cout << "-----------------------\n"<<std::endl;
+    ss << "-----------------------\n";
+    return ss.str();
 }
 
 void Chat::deleteMessage(int index) {
     if (index < 0 || index >= chatMessages.size()) {
         throw std::out_of_range("Indice messaggio non valido!");
     }
-    std::cout << "\nEliminando messaggio: ";
-    chatMessages[index].printMessage();
+    std::cout << "\nEliminando messaggio: " << chatMessages[index].toStringMessage();
     chatMessages.erase(chatMessages.begin() + index);
 
     std::cout << "Messaggio eliminato con successo!\n";
@@ -51,7 +53,7 @@ void Chat::markMessageAsRead(int index) {
 int Chat::getUnreadMessageCount() const {
     int count = 0;
     for (const auto& message : chatMessages) {
-        if (!message.IsRead()) {
+        if (!message.isRead()) {
             count++;
         }
     }
@@ -62,7 +64,7 @@ int Chat::getTotalMessages() const {
     return chatMessages.size();
 }
 
-const std::string Chat::getChatName() const{
+const std::string& Chat::getChatName() const{
     return name;
 }
 
