@@ -38,7 +38,10 @@ enable_testing()
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
 # Crea l'eseguibile per i test
-add_executable(runTests Test/Test.cpp ${SOURCES} ${HEADERS})
+add_executable(runTests Test/UserTest.cpp ${SOURCES} ${HEADERS}
+        Test/MessageTest.cpp
+        Test/ChatTest.cpp
+        Test/ChatRegisterTest.cpp)
 
 # Collega GoogleTest ai test
 target_link_libraries(runTests GTest::gtest GTest::gtest_main)

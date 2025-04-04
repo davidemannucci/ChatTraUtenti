@@ -29,10 +29,14 @@ void Chat::deleteMessage(int index) {
     if (index < 0 || index >= chatMessages.size()) {
         throw std::out_of_range("Indice messaggio non valido!");
     }
-    std::cout << "\nEliminando messaggio: " << chatMessages[index].toStringMessage();
     chatMessages.erase(chatMessages.begin() + index);
+}
 
-    std::cout << "Messaggio eliminato con successo!\n";
+const Message& Chat::getMessage(int index) const {
+    if (index < 0 || index >= chatMessages.size()) {
+        throw std::out_of_range("Indice messaggio non valido!");
+    }
+    return chatMessages[index];
 }
 
 int Chat::getUser1Id() const {

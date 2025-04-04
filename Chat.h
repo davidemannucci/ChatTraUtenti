@@ -12,6 +12,7 @@ class Chat{
         void sendMessage(const Message& message);
         std::string toStringChat() const;
         void deleteMessage(int index);
+        const Message& getMessage(int index) const;
         int getUser1Id() const;
         int getUser2Id() const;
         int getUnreadMessageCount() const;

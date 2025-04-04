@@ -105,6 +105,14 @@ int main() {
     }
 
     try {
+        std::cout << "\nRecupero del primo messaggio nella chat tra Francesco e Marco:\n";
+        const Message& firstMessage = chat1.getMessage(0);
+        std::cout << "Contenuto: " << firstMessage.toStringMessage()<<std::endl;
+    } catch (const std::out_of_range& e) {
+        std::cerr << "Errore: " << e.what() << std::endl;
+    }
+
+    try {
         chat1.deleteMessage(1);  // Elimina il secondo messaggio
         std::cout<< chat1.toStringChat();
     } catch (const std::out_of_range& e) {
